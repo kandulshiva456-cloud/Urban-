@@ -1,0 +1,8 @@
+# Urban Man Ayurveda & Wellness Center
+User-agent: *
+Allow: /
+
+# NOTE: Once the live domain is confirmed (BUSINESS_CONFIG.siteUrl in js/config.js),
+# add the absolute sitemap URL below, e.g.:
+# Sitemap: https://your-domain.example/sitemap.xml
+# (sitemap.xml in this folder uses a placeholder host until then)

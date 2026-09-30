@@ -1,0 +1,129 @@
+/* =============================================================================
+   animations.css — scroll reveals, hero motion and micro-interactions.
+   Everything here is opt-in: elements start visible and are only hidden once
+   the script has marked them with .reveal, so content survives without JS.
+   ========================================================================== */
+
+/* ---------------------------------------------------------------------------
+   Scroll reveal (hydrated by js/main.js)
+   ------------------------------------------------------------------------ */
+.reveal {
+    opacity: 1;
+    transform: none;
+    transition: opacity .8s var(--ease), transform .8s var(--ease);
+    transition-delay: var(--reveal-delay, 0ms);
+    will-change: opacity, transform;
+}
+
+html.js .reveal:not(.is-revealed) {
+    opacity: 0;
+    transform: translate3d(0, var(--reveal-y, 28px), 0);
+}
+
+html.js .reveal.reveal--left:not(.is-revealed) { transform: translate3d(-34px, 0, 0); }
+html.js .reveal.reveal--right:not(.is-revealed) { transform: translate3d(34px, 0, 0); }
+html.js .reveal.reveal--scale:not(.is-revealed) { transform: scale(.96); }
+
+/* Reduced motion: everything simply appears */
+@media (prefers-reduced-motion: reduce) {
+    html.js .reveal,
+    html.js .reveal:not(.is-revealed) {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+    }
+}
+
+/* ---------------------------------------------------------------------------
+   Hero entrance
+   ------------------------------------------------------------------------ */
+.hero-eyebrow,
+.hero-title,
+.hero-tagline,
+.hero-copy,
+.hero .btn-row,
+.hero-trust {
+    animation: heroIn .9s var(--ease) both;
+}
+
+.hero-title { animation-delay: .12s; }
+.hero-tagline { animation-delay: .24s; }
+.hero-copy { animation-delay: .34s; }
+.hero .btn-row { animation-delay: .46s; }
+.hero-trust { animation-delay: .58s; }
+
+@keyframes heroIn {
+    from { opacity: 0; transform: translate3d(0, 26px, 0); }
+    to { opacity: 1; transform: none; }
+}
+
+/* Slow push-in on the hero still; disabled under reduced motion */
+.hero-media img {
+    animation: kenburns 26s ease-out both;
+    transform-origin: 62% 40%;
+}
+
+@keyframes kenburns {
+    from { transform: scale(1); }
+    to { transform: scale(1.08); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hero-eyebrow, .hero-title, .hero-tagline, .hero-copy, .hero .btn-row, .hero-trust {
+        animation: none;
+    }
+    .hero-media img { animation: none; }
+}
+
+/* ---------------------------------------------------------------------------
+   Scroll cue + ambient float
+   ------------------------------------------------------------------------ */
+@keyframes floatY {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-9px); }
+}
+
+.float { animation: floatY 5.5s ease-in-out infinite; }
+
+@keyframes pulseRing {
+    0% { box-shadow: 0 0 0 0 rgba(198, 161, 91, .4); }
+    70% { box-shadow: 0 0 0 16px rgba(198, 161, 91, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(198, 161, 91, 0); }
+}
+
+.pulse { animation: pulseRing 2.6s ease-out infinite; }
+
+/* ---------------------------------------------------------------------------
+   Accordion / drawer style expansions
+   ------------------------------------------------------------------------ */
+details[open] .faq-a { animation: fadeUp .45s var(--ease) both; }
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: none; }
+}
+
+/* ---------------------------------------------------------------------------
+   Section headers: underline draw
+   ------------------------------------------------------------------------ */
+@keyframes drawLine { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+.eyebrow::before { transform-origin: right; animation: drawLine .8s var(--ease) both; }
+.eyebrow.center::after { transform-origin: left; animation: drawLine .8s .1s var(--ease) both; }
+
+/* ---------------------------------------------------------------------------
+   Skeleton shimmer for lazily populated regions
+   ------------------------------------------------------------------------ */
+@keyframes shimmer {
+    from { background-position: -220% 0; }
+    to { background-position: 220% 0; }
+}
+
+.is-loading {
+    background: linear-gradient(90deg, rgba(48, 53, 47, .35) 25%, rgba(82, 107, 94, .5) 50%, rgba(48, 53, 47, .35) 75%);
+    background-size: 220% 100%;
+    animation: shimmer 1.4s linear infinite;
+    color: transparent !important;
+    border-radius: 8px;
+    min-height: 1.2em;
+}

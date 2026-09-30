@@ -1,0 +1,167 @@
+/* =============================================================================
+   responsive.css — structural breakpoints for the Urban Man site.
+   The layout is fluid by default (auto-fit grids, clamp() type); this file
+   only handles the discrete shifts: navigation mode, hero proportions,
+   booking wizard stacking and the mobile action bar.
+   ========================================================================== */
+
+/* ---------------------------------------------------------------------------
+   Wide desktop — give the header room to breathe, trim long nav gaps
+   ------------------------------------------------------------------------ */
+@media (min-width: 1440px) {
+    :root { --container: min(100% - 5rem, 1360px); --container-wide: min(100% - 5rem, 1580px); }
+
+    .main-nav ul { gap: 1.75rem; }
+}
+
+/* ---------------------------------------------------------------------------
+   Laptop — drop the inline phone number before the nav has to fight for room
+   ------------------------------------------------------------------------ */
+@media (max-width: 1180px) {
+    .header-phone { display: none; }
+
+    .bk-layout { grid-template-columns: minmax(0, 1fr) minmax(0, 320px); }
+}
+
+/* ---------------------------------------------------------------------------
+   Tablet landscape / small laptop — compact nav
+   ------------------------------------------------------------------------ */
+@media (max-width: 1024px) {
+    .hero-inner { max-width: min(100%, 680px); }
+    .footer-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr)); }
+    .footer-brand { grid-column: 1 / -1; }
+}
+
+/* ---------------------------------------------------------------------------
+   Tablet portrait — hamburger + drawer take over
+   ------------------------------------------------------------------------ */
+@media (max-width: 960px) {
+    .main-nav,
+    .header-cta .btn { display: none; }
+
+    .nav-toggle { display: inline-flex; }
+
+    .header-inner { justify-content: space-between; }
+    .header-cta { margin-left: auto; }
+
+    .hero { min-height: 92svh; }
+    .hero-scroll { display: none; }
+
+    .split { grid-template-columns: 1fr; }
+    .split .media-frame { max-width: 640px; margin-inline: auto; }
+
+    .bk-layout { grid-template-columns: 1fr; }
+    .bk-summary { position: static; order: -1; }
+
+    .footer-bottom { flex-direction: column; align-items: flex-start; }
+}
+
+/* ---------------------------------------------------------------------------
+   Large phone / small tablet — single-column everything
+   ------------------------------------------------------------------------ */
+@media (max-width: 760px) {
+    :root { --container: min(100% - 1.75rem, 1320px); --container-wide: min(100% - 1.75rem, 1560px); }
+
+    /* Sticky mobile action bar appears */
+    .sticky-bar { display: flex; }
+
+    /* Room for the sticky bar at the bottom of the viewport */
+    body { padding-bottom: 84px; }
+
+    .hero::before {
+        background:
+            linear-gradient(180deg, rgba(11, 13, 12, .88) 0%, rgba(11, 13, 12, .42) 34%, rgba(11, 13, 12, .94) 86%),
+            linear-gradient(90deg, rgba(11, 13, 12, .8), rgba(11, 13, 12, .35));
+    }
+
+    .hero-title .line-2 { letter-spacing: .22em; }
+
+    .hero-trust { gap: .35rem 1rem; margin-top: -.85rem; }
+    .hero-trust li { font-size: 12px; line-height: 1.4; }
+
+    /* Trust strip: kill the vertical dividers in a 2-col layout */
+    .trust-strip ul { grid-template-columns: repeat(2, 1fr); row-gap: 1.5rem; }
+    .trust-item:not(:last-child)::after { display: none; }
+
+    .filter-count { width: 100%; margin-left: 0; order: 9; }
+
+    .service-grid { grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); }
+
+    .media-frame img, .media-frame video { aspect-ratio: 3 / 2; }
+
+    .brand-mark-official { width: 48px; }
+    .footer-logo { width: clamp(175px, 55vw, 220px); }
+
+    .price-table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .price-table th, .price-table td { padding: .75rem .8rem; white-space: nowrap; }
+
+    .bk-nav { display: none; }
+    .bk-sticky { display: flex; }
+    .bk-panel { padding-bottom: .5rem; }
+
+    .bk-review .rv-row { flex-direction: column; gap: .25rem; }
+    .bk-review .rv-row dd { text-align: left; }
+
+    .lightbox-prev, .lightbox-next { top: auto; bottom: 1rem; transform: none; }
+    .lightbox-prev { left: 1rem; }
+    .lightbox-next { right: 1rem; transform: none; }
+    .lightbox-prev:hover, .lightbox-next:hover { transform: scale(1.06); }
+}
+
+/* The sticky wizard controls only exist below 760px */
+@media (min-width: 761px) {
+    .bk-sticky { display: none; }
+}
+
+/* ---------------------------------------------------------------------------
+   Phone — tighter type, stacked CTAs, single-column grids
+   ------------------------------------------------------------------------ */
+@media (max-width: 560px) {
+    .btn-row { width: 100%; }
+    .btn-row .btn { flex: 1 1 100%; }
+
+    .hero-inner { margin-left: max(.875rem, calc((100% - var(--container)) / 2)); }
+
+    .hero-trust { flex-direction: column; align-items: flex-start; gap: .35rem; margin-top: -.85rem; }
+
+    .section-head .btn-row { flex-direction: column; align-items: stretch; }
+
+    .steps, .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+
+    .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(min(100%, 100%), 1fr)); }
+
+    .footer-grid { grid-template-columns: 1fr; }
+
+    .form-grid { grid-template-columns: 1fr; }
+
+    .bk-choices { grid-template-columns: 1fr; }
+
+    .position { flex-direction: column; align-items: flex-start; }
+
+    .mobile-nav .m-actions .btn { width: 100%; }
+
+    .stat-row { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ---------------------------------------------------------------------------
+   Short viewports — keep the hero from swallowing the fold
+   ------------------------------------------------------------------------ */
+@media (max-height: 640px) and (min-width: 761px) {
+    .hero { min-height: auto; padding-top: calc(var(--header-h) + 3.5rem); padding-bottom: 3rem; }
+    .hero-scroll { display: none; }
+}
+
+/* ---------------------------------------------------------------------------
+   Reduced motion — no parallax, no push-in, no reveal transforms
+   ------------------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+
+    *, *::before, *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .001ms !important;
+    }
+
+    .hero-media img { transform: none !important; }
+}
